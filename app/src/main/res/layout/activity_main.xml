@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="@string/app_name"
+        android:titleTextColor="@color/white"/>
+    
+    <EditText
+        android:id="@+id/novaTarefa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Adicione uma nova tarefa"
+        android:inputType="text"
+        android:imeOptions="actionDone"
+        android:maxLines="1"
+        android:padding="16dp"/>
+    <Button
+        android:id="@+id/botaoAdicionar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="Add"
+        android:textSize="18sp"
+        android:layout_margin="16dp"/>
+
+
+    <ListView
+        android:id="@+id/todo_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
+
+</LinearLayout>
