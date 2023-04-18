@@ -45,6 +45,12 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        listView.onItemClickListener = AdapterView.OnItemClickListener {
+                _, _, position, _ ->
+            todoItens.removeAt(position)
+            listAdapter.notifyDataSetChanged()
+        }
+
         listAdapter.notifyDataSetChanged()
 
     }
