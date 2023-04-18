@@ -8,50 +8,46 @@ import android.widget.EditText
 import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import io.uninter.aluno.erasmoapp.controllers.TodoListPresenter
+import io.uninter.aluno.erasmoapp.controllers.TodoListView
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(), TodoListView {
     private lateinit var listView: ListView
-    private lateinit var todoItens: ArrayList<String>
     private lateinit var listAdapter: ArrayAdapter<String>
     private lateinit var novaTarefaText: EditText
+    private lateinit var presenter: TodoListPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         listView = findViewById(R.id.todo_list)
-       novaTarefaText = findViewById(R.id.novaTarefa)
+        novaTarefaText = findViewById(R.id.novaTarefa)
 
-        todoItens = ArrayList()
-        listAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, todoItens)
-
+        listAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf())
         listView.adapter = listAdapter
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener {
-                _, _, position, _ ->
-            val item = todoItens[position]
-            Toast.makeText(this@MainActivity, item, Toast.LENGTH_SHORT).show()
-        }
+        presenter = TodoListPresenter(this)
 
         val botaoAdicionar: Button = findViewById(R.id.botaoAdicionar)
-        botaoAdicionar.setOnClickListener{
+        botaoAdicionar.setOnClickListener {
             val novaTarefa: String = novaTarefaText.text.toString().trim()
-            if (novaTarefa.isNotEmpty()) {
-                todoItens.add(novaTarefa)
-                novaTarefaText.setText("")
-                listAdapter.notifyDataSetChanged()
-            } else {
-                Toast.makeText(this@MainActivity, "Digite uma tarefa", Toast.LENGTH_SHORT).show()
-            }
+            presenter.addItem(novaTarefa)
+            novaTarefaText.setText("")
         }
 
-        listView.onItemClickListener = AdapterView.OnItemClickListener {
-                _, _, position, _ ->
-            todoItens.removeAt(position)
-            listAdapter.notifyDataSetChanged()
+        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            presenter.removeItem(position)
         }
+    }
 
+    override fun showItemList(items: List<String>) {
+        listAdapter.clear()
+        listAdapter.addAll(items)
         listAdapter.notifyDataSetChanged()
+    }
 
+    override fun showError(message: String) {
+        Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
     }
 }
